@@ -34,12 +34,13 @@ class DotProductPredictor(nn.Module):
 
 # Graph convolutional network (GCN) for graph classification
 class GCN(nn.Module):
-    def __init__(self,
-                 in_feats,
-                 n_hidden,
-                 num_classes,
-                 n_layers,
-                 dropout):
+    def __init__(
+            self,
+            in_feats,
+            n_hidden,
+            num_classes,
+            n_layers,
+            dropout):
         super(GCN, self).__init__()
         # self.g = g
         self.layers = nn.ModuleList()
