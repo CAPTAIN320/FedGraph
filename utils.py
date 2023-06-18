@@ -38,11 +38,13 @@ def add_edges(g):
 
 def init_model(args):
     if args.model_type == 'GCN':
-        return GCN(args.in_feats, args.n_hidden,
-                   args.num_classes, args.n_layers, args.dropout).to(args.device)
+        return GCN(
+            args.in_feats, args.n_hidden,
+            args.num_classes, args.n_layers, args.dropout).to(args.device)
     elif args.model_type == 'MLP':
-        return MLP(args.in_feats, args.n_hidden,
-                   args.num_classes, args.n_layers, args.dropout).to(args.device)
+        return MLP(
+            args.in_feats, args.n_hidden,
+            args.num_classes, args.n_layers, args.dropout).to(args.device)
     else:
         raise ValueError('Unknown model type {}'.format(args.model_type))
 
