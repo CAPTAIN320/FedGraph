@@ -3,7 +3,7 @@ from dgl.nn.pytorch import GraphConv
 import torch.nn.functional as F
 import dgl.function as f
 
-
+# Multi-layer perceptron (MLP) for graph classification
 class MLP(nn.Module):
     def __init__(self, in_feats, n_hidden, num_classes, n_layers, dropout):
         super(MLP, self).__init__()
@@ -22,7 +22,7 @@ class MLP(nn.Module):
             h = self.activation(layer(h))
         return h
 
-
+# Dot product predictor for link prediction
 class DotProductPredictor(nn.Module):
     def forward(self, graph, h):
         # h contains the node representations computed from the GNN defined
@@ -32,14 +32,15 @@ class DotProductPredictor(nn.Module):
             graph.apply_edges(f.u_dot_v('h', 'h', 'score'))
             return graph.edata['score']
 
-
+# Graph convolutional network (GCN) for graph classification
 class GCN(nn.Module):
-    def __init__(self,
-                 in_feats,
-                 n_hidden,
-                 num_classes,
-                 n_layers,
-                 dropout):
+    def __init__(
+            self,
+            in_feats,
+            n_hidden,
+            num_classes,
+            n_layers,
+            dropout):
         super(GCN, self).__init__()
         # self.g = g
         self.layers = nn.ModuleList()
