@@ -31,7 +31,6 @@ def model_args(parser):
                         help="number of hidden gcn units")
     parser.add_argument("--n-layers", type=int, default=1,
                         help="number of hidden gcn layers")
-                    
 
 
 def optim_args(parser):

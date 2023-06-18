@@ -4,8 +4,9 @@ import torch
 
 
 def plotfig(recorder, args):
-    recorder = torch.load('./saves/recorder.pt',
-                          map_location=torch.device('cpu'))
+    recorder = torch.load(
+        './saves/recorder.pt',
+        map_location=torch.device('cpu'))
     plt.style.use('seaborn')
     d = recorder['test_acc']['clients']
     # mpl.rcParams['lines.linewidth'] = 2
@@ -24,9 +25,10 @@ def visualize(g):
     pos = nx.spring_layout(nx_G)
     # plt.figure(figsize=(8, 8))
     # plt.axis('off')
-    nx.draw_networkx(nx_G, pos=pos, node_size=5, cmap=plt.get_cmap('coolwarm'),
-                     node_color=labels, edge_color='k',
-                     arrows=False, width=0.5, style='dotted', with_labels=False)
+    nx.draw_networkx(
+        nx_G, pos=pos, node_size=5, cmap=plt.get_cmap('coolwarm'),
+        node_color=labels, edge_color='k',
+        arrows=False, width=0.5, style='dotted', with_labels=False)
     # plt.savefig('./graph.pdf')
 
 
@@ -36,9 +38,10 @@ def plotg(g):
     # pos = nx.spring_layout(nx_G)
     # plt.figure(figsize=(8, 8))
     # plt.axis('off')
-    nx.draw_networkx(nx_G, node_size=5, cmap=plt.get_cmap('coolwarm'),
-                     edge_color='k',
-                     arrows=False, width=0.5, style='dotted', with_labels=False)
+    nx.draw_networkx(
+        nx_G, node_size=5, cmap=plt.get_cmap('coolwarm'),
+        edge_color='k',
+        arrows=False, width=0.5, style='dotted', with_labels=False)
     plt.savefig('./graph.pdf')
 
 def subfigs(graphs, args):
