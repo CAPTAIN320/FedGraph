@@ -13,4 +13,5 @@ split_method: random_choice
 # split_method: b_min_cut
 # split_method: ub_min_cut
 num_clients: 10
-split: 11 # num_clients + 1
+num_sybils: 5
+split: 11 # all_clients + 1 note: all_clients = num_clients + num_sybils

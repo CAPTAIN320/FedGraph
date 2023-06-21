@@ -10,6 +10,8 @@ def fl_args(parser):
                         help="dropout probability")
     parser.add_argument("--num_clients", type=int, default=3,
                         help="dropout probability")
+    parser.add_argument("--num_sybils", type=int, default=3,
+                        help="dropout probability")
     parser.add_argument("--n_epochs", type=int, default=200,
                         help="number of training epochs")
 
