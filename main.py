@@ -6,6 +6,7 @@ from data import *
 from args import *
 from plot import *
 import os
+import random
 
 from sybil_layer import *
 
@@ -30,16 +31,19 @@ graphs = data_split(g, args)
 server = Server(g, args)
 clients = [Client(k, graphs[k], args) for k in range(args.num_clients)]
 
-sybil_clients = [0, 2]
+total_clients = len(clients)
+num_sybil_clients = args.num_sybils
+sybil_clients = random.sample(range(total_clients), num_sybil_clients)
+# sybil_clients = [0, 2]
 
 for index, client in enumerate(clients):
     if index in sybil_clients:
-        print("This is Sybil Client, index: ", index)
+        print("This is Sybil Client ", index+1)
         print("Modifying Graph")
-        client.g = modify_g_node_values(client.g)
-        client.g = modify_g_edge_values(client.g)
+        client.g = modify_g_node_values(client.g) # modify node values
+        client.g = modify_g_edge_values(client.g) # modify edge values
     else:
-        print("Honest Client, index: ", index)
+        print("Honest Client ", index+1)
     client.g.remove_edges(client.g.edges(form='eid'))
     # i.g = add_self_loop(i.g)
     add_edges(client.g)
@@ -56,9 +60,6 @@ for _ in range(int(args.n_epochs)):
         recorder['test_acc']['clients'][k+1].append(acc)
         # Local_update
         clients[k].local_update()
-        # # Evaluate
-        # acc = evaluate(clients[k].model, clients[k], mask='test')
-        # recorder['test_acc']['clients'][k+1].append(acc)
     # Merge
     server.merge(clients)
     acc = evaluate(server.model, server)
