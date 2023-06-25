@@ -49,7 +49,7 @@ def modify_g_node_values(graph):
 
         # Get and modify label
         label = graph.ndata['label'][node_index]
-        sybil_label = label * 2
+        sybil_label = label # TODO: How to modify label?
         sybil_graph.ndata['label'][node_index] = sybil_label
 
         # Get and modify val_mask
