@@ -77,21 +77,37 @@ def modify_g_node_values(graph):
   return sybil_graph
 
 def modify_g_edge_values(graph):
+    # Clone the graph
+    sybil_graph = graph.clone()
+
     for edge_index in range(graph.num_edges()):
-        print("edge index: ", edge_index)
         edge_id = graph.edata['_ID'][edge_index]
-        print("edge id: ", edge_id)
         sybil_id = edge_id + 2
-        print("sybil edge id: ", sybil_id)
+        sybil_graph.edata['_ID'][edge_index] = sybil_id
+
+    return sybil_graph
+
+def add_nodes(graph, amount=0):
+    graph.add_nodes(amount)
+    return graph
+
+def add_edges(graph, src_node_id, dest_node_id): # CPT-NOTE: Node is added if src & dest nodes do NOT exist
+    graph.add_edges(src_node_id, dest_node_id)
+    return graph
+
 
 sybil_graph = modify_g_node_values(chosen_graph)
 print("num of sybil nodes: ",sybil_graph.num_nodes())
 print("num of sybil edges: ",sybil_graph.num_edges())
 
-modify_g_edge_values(chosen_graph)
-print(sybil_graph.edata)
+sybil_graph = modify_g_edge_values(chosen_graph)
+print("num of sybil nodes: ",sybil_graph.num_nodes())
+print("num of sybil edges: ",sybil_graph.num_edges())
 
-print(chosen_graph.edata)
+sybil_graph = add_nodes(sybil_graph, 10)
+print("num of sybil nodes: ",sybil_graph.num_nodes())
+print("num of sybil edges: ",sybil_graph.num_edges())
 
-def modify_g_node_num(graph):
-    
+sybil_graph = add_edges(sybil_graph, 0, 1)
+print("num of sybil nodes: ",sybil_graph.num_nodes())
+print("num of sybil edges: ",sybil_graph.num_edges())
