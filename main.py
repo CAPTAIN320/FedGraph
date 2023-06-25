@@ -48,7 +48,8 @@ for index, client in enumerate(clients):
     # i.g = add_self_loop(i.g)
     add_edges(client.g)
 
-new_client = Client(-1, graphs[-1], args)
+# This client is used to evaluate the model on unseen data
+test_client = Client(-1, graphs[-1], args)
 
 # FLearning
 for _ in range(int(args.n_epochs)):
@@ -64,7 +65,7 @@ for _ in range(int(args.n_epochs)):
     server.merge(clients)
     acc = evaluate(server.model, server)
     recorder['test_acc']['server'].append(acc)
-    acc = evaluate(server.model, new_client)
+    acc = evaluate(server.model, test_client)
     recorder['test_acc']['clients'][0].append(acc)
 
 # Evaluate
@@ -77,11 +78,11 @@ server.g.remove_edges(server.g.edges(form='eid'))
 server.g = add_self_loop(server.g)
 acc = evaluate(server.model, server)
 print("Server: {:.2%}".format(acc))
-acc = evaluate(server.model, new_client)
-print("Client{}: {:.2%}".format(new_client.id, acc))
-new_client.g.remove_edges(new_client.g.edges(form='eid'))
-new_client.g = add_self_loop(new_client.g)
-acc = evaluate(server.model, new_client)
-print("Client{}: {:.2%}".format(new_client.id, acc))
+acc = evaluate(server.model, test_client)
+print("Test Client{}: {:.2%}".format(test_client.id, acc))
+test_client.g.remove_edges(test_client.g.edges(form='eid'))
+test_client.g = add_self_loop(test_client.g)
+acc = evaluate(server.model, test_client)
+print("Test Client{}: {:.2%}".format(test_client.id, acc))
 torch.save(recorder, './saves/recorder.pt')
 plotfig(recorder, args)
