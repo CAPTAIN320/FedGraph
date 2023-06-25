@@ -33,11 +33,9 @@ chosen_graph = graphs[0]
 
 def modify_g_node_values(graph):
     # Print graph information
-    print("num of nodes: ",graph.num_nodes())
-    print("num of edges: ",graph.num_edges())
-    print("is homogenous: ",graph.is_homogeneous)
-    print("num of source nodes: ",graph.num_src_nodes())
-    print("num of destination nodes: ",graph.num_dst_nodes())
+    # print("num of nodes: ",graph.num_nodes())
+    # print("num of edges: ",graph.num_edges())
+    # print("is homogenous: ",graph.is_homogeneous)
 
     # Clone the graph
     sybil_graph = graph.clone()
