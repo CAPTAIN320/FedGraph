@@ -7,6 +7,8 @@ from args import *
 from plot import *
 import os
 
+from sybil_layer import *
+
 # Initialize
 os.makedirs('saves', exist_ok=True)
 args = args()
@@ -22,14 +24,27 @@ g = data_load(args)
 e = g.edges(form='eid')
 graphs = data_split(g, args)
 # subfigs(graphs,args)
+
+
 # FL initialize
 server = Server(g, args)
 clients = [Client(k, graphs[k], args) for k in range(args.num_clients)]
-for i in clients:
-    i.g.remove_edges(i.g.edges(form='eid'))
+
+sybil_clients = [0, 2]
+
+for index, client in enumerate(clients):
+    if index in sybil_clients:
+        print("This is Sybil Client, index: ", index)
+        print("Modifying Graph")
+        client.g = modify_g_node_values(client.g)
+    else:
+        print("Honest Client, index: ", index)
+    client.g.remove_edges(client.g.edges(form='eid'))
     # i.g = add_self_loop(i.g)
-    add_edges(i.g)
+    add_edges(client.g)
+
 new_client = Client(-1, graphs[-1], args)
+
 # FLearning
 for _ in range(int(args.n_epochs)):
     for k in range(len(clients)):
@@ -49,6 +64,7 @@ for _ in range(int(args.n_epochs)):
     recorder['test_acc']['server'].append(acc)
     acc = evaluate(server.model, new_client)
     recorder['test_acc']['clients'][0].append(acc)
+
 # Evaluate
 for k in range(len(clients)):
     acc = evaluate(clients[k].model, clients[k], mask='test')
