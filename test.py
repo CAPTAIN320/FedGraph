@@ -78,18 +78,17 @@ def modify_g_node_values(graph):
 
 def modify_g_edge_values(graph):
     for edge_index in range(graph.num_edges()):
+        print("edge index: ", edge_index)
         edge_id = graph.edata['_ID'][edge_index]
         print("edge id: ", edge_id)
         sybil_id = edge_id + 2
         print("sybil edge id: ", sybil_id)
 
 sybil_graph = modify_g_node_values(chosen_graph)
-print("num of nodes: ",sybil_graph.num_nodes())
-print("num of edges: ",sybil_graph.num_edges())
-print("is homogenous: ",sybil_graph.is_homogeneous)
-print("num of source nodes: ",sybil_graph.num_src_nodes())
-print("num of destination nodes: ",sybil_graph.num_dst_nodes())
+print("num of sybil nodes: ",sybil_graph.num_nodes())
+print("num of sybil edges: ",sybil_graph.num_edges())
 
-# modify_g_edge_values(chosen_graph)
+modify_g_edge_values(chosen_graph)
+print(sybil_graph.edata)
 
-# print(chosen_graph.ndata)
+print(chosen_graph.edata)
