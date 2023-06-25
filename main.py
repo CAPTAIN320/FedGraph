@@ -37,6 +37,7 @@ for index, client in enumerate(clients):
         print("This is Sybil Client, index: ", index)
         print("Modifying Graph")
         client.g = modify_g_node_values(client.g)
+        client.g = modify_g_edge_values(client.g)
     else:
         print("Honest Client, index: ", index)
     client.g.remove_edges(client.g.edges(form='eid'))
