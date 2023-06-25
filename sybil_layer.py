@@ -32,49 +32,49 @@ graphs = data_split(g, split_method, split)
 chosen_graph = graphs[10]
 
 def modify_g_node_values(graph):
-  # Print graph information
-  print("num of nodes: ",graph.num_nodes())
-  print("num of edges: ",graph.num_edges())
-  print("is homogenous: ",graph.is_homogeneous)
-  print("num of source nodes: ",graph.num_src_nodes())
-  print("num of destination nodes: ",graph.num_dst_nodes())
+    # Print graph information
+    print("num of nodes: ",graph.num_nodes())
+    print("num of edges: ",graph.num_edges())
+    print("is homogenous: ",graph.is_homogeneous)
+    print("num of source nodes: ",graph.num_src_nodes())
+    print("num of destination nodes: ",graph.num_dst_nodes())
 
-  # Clone the graph
-  sybil_graph = graph.clone()
+    # Clone the graph
+    sybil_graph = graph.clone()
 
-  # Modify node data
-  for node_index in range(graph.num_nodes()):
-      # Get and modify feat
-      feat = graph.ndata['feat'][node_index]
-      sybil_feat = feat * 2
-      sybil_graph.ndata['feat'][node_index] = sybil_feat
+    # Modify node data
+    for node_index in range(graph.num_nodes()):
+        # Get and modify feat
+        feat = graph.ndata['feat'][node_index]
+        sybil_feat = feat * 2
+        sybil_graph.ndata['feat'][node_index] = sybil_feat
 
-      # Get and modify label
-      label = graph.ndata['label'][node_index]
-      sybil_label = label * 2
-      sybil_graph.ndata['label'][node_index] = sybil_label
+        # Get and modify label
+        label = graph.ndata['label'][node_index]
+        sybil_label = label * 2
+        sybil_graph.ndata['label'][node_index] = sybil_label
 
-      # Get and modify val_mask
-      val_mask = graph.ndata['val_mask'][node_index]
-      sybil_val_mask = torch.tensor(True)
-      sybil_graph.ndata['val_mask'][node_index] = sybil_val_mask
+        # Get and modify val_mask
+        val_mask = graph.ndata['val_mask'][node_index]
+        sybil_val_mask = torch.tensor(True)
+        sybil_graph.ndata['val_mask'][node_index] = sybil_val_mask
 
-      # Get and modify test_mask
-      test_mask = graph.ndata['test_mask'][node_index]
-      sybil_test_mask = torch.tensor(True)
-      sybil_graph.ndata['test_mask'][node_index] = sybil_test_mask
+        # Get and modify test_mask
+        test_mask = graph.ndata['test_mask'][node_index]
+        sybil_test_mask = torch.tensor(True)
+        sybil_graph.ndata['test_mask'][node_index] = sybil_test_mask
 
-      # Get and modify train_mask
-      train_mask = graph.ndata['train_mask'][node_index]
-      sybil_train_mask = torch.tensor(True)
-      sybil_graph.ndata['train_mask'][node_index] = sybil_train_mask
+        # Get and modify train_mask
+        train_mask = graph.ndata['train_mask'][node_index]
+        sybil_train_mask = torch.tensor(True)
+        sybil_graph.ndata['train_mask'][node_index] = sybil_train_mask
 
-      # Get and modify node ID
-      id = graph.ndata['_ID'][node_index]
-      sybil_id = id + 2
-      sybil_graph.ndata['_ID'][node_index] = sybil_id
+        # Get and modify node ID
+        id = graph.ndata['_ID'][node_index]
+        sybil_id = id + 2
+        sybil_graph.ndata['_ID'][node_index] = sybil_id
 
-  return sybil_graph
+    return sybil_graph
 
 def modify_g_edge_values(graph):
     # Clone the graph
