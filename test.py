@@ -7,6 +7,7 @@ data = CoraGraphDataset()
 g = data[0]
 # print(g)
 
+# Split the graph
 def data_split(g, args, split):
     if args == 'random_choice':
         # random_choice
@@ -25,87 +26,70 @@ def data_split(g, args, split):
     return graphs
 
 split_method = "random_choice"
-split = 2
+split = 100
 graphs = data_split(g, split_method, split)
-# print(graphs[99])
 
-chosen_graph = graphs[1]
-print("num of nodes: ",chosen_graph.num_nodes())
-print("num of edges: ",chosen_graph.num_edges())
-print("is homogenous: ",chosen_graph.is_homogeneous)
-print("num of source nodes: ",chosen_graph.num_src_nodes())
-print("num of destination nodes: ",chosen_graph.num_dst_nodes())
+chosen_graph = graphs[10]
 
-node_index = 0
+def modify_g_node_values(graph):
+  # Print graph information
+  print("num of nodes: ",graph.num_nodes())
+  print("num of edges: ",graph.num_edges())
+  print("is homogenous: ",graph.is_homogeneous)
+  print("num of source nodes: ",graph.num_src_nodes())
+  print("num of destination nodes: ",graph.num_dst_nodes())
 
-feat = chosen_graph.ndata['feat'][node_index]
-print("feat: ",feat)
-sybil_feat = feat * 2
-print("sybil_feat: ",sybil_feat)
+  # Clone the graph
+  sybil_graph = graph.clone()
 
-label = chosen_graph.ndata['label'][node_index]
-print("label: ", label)
-sybil_label = label * 2
-print("sybil_label: ", sybil_label)
+  # Modify node data
+  for node_index in range(graph.num_nodes()):
+      # Get and modify feat
+      feat = graph.ndata['feat'][node_index]
+      sybil_feat = feat * 2
+      sybil_graph.ndata['feat'][node_index] = sybil_feat
 
-val_mask = chosen_graph.ndata['val_mask'][node_index]
-print("val_mask: ", val_mask)
-sybil_val_mask = torch.tensor(True)
-print("sybil_val_mask: ", sybil_val_mask)
+      # Get and modify label
+      label = graph.ndata['label'][node_index]
+      sybil_label = label * 2
+      sybil_graph.ndata['label'][node_index] = sybil_label
 
-test_mask = chosen_graph.ndata['test_mask'][node_index]
-print("test_mask: ",test_mask)
-sybil_test_mask = torch.tensor(True)
-print("sybil_test_mask: ",sybil_test_mask)
+      # Get and modify val_mask
+      val_mask = graph.ndata['val_mask'][node_index]
+      sybil_val_mask = torch.tensor(True)
+      sybil_graph.ndata['val_mask'][node_index] = sybil_val_mask
 
-train_mask = chosen_graph.ndata['train_mask'][node_index]
-print("train_mask: ",train_mask)
-sybil_train_mask = torch.tensor(True)
-print("sybil_train_mask: ",sybil_train_mask)
+      # Get and modify test_mask
+      test_mask = graph.ndata['test_mask'][node_index]
+      sybil_test_mask = torch.tensor(True)
+      sybil_graph.ndata['test_mask'][node_index] = sybil_test_mask
 
-id = chosen_graph.ndata['_ID'][node_index]
-print("_ID: ",id)
-sybil_id = id + 2
-print("sybil_id: ",sybil_id)
+      # Get and modify train_mask
+      train_mask = graph.ndata['train_mask'][node_index]
+      sybil_train_mask = torch.tensor(True)
+      sybil_graph.ndata['train_mask'][node_index] = sybil_train_mask
 
-edge_index = 0
-edge_id = chosen_graph.edata['_ID'][edge_index]
-print("edge id: ",edge_id)
+      # Get and modify node ID
+      id = graph.ndata['_ID'][node_index]
+      sybil_id = id + 2
+      sybil_graph.ndata['_ID'][node_index] = sybil_id
 
-chosen_graph.add_nodes(100) # add 100 nodes
-print(chosen_graph.num_nodes())
-print(chosen_graph.add_edges(0,1000)) # add edge from node 0 to node 1
-print(chosen_graph.num_edges())
-print()
+  return sybil_graph
 
-# Modify node data
-for node_index in range(chosen_graph.num_nodes()):
-    feat = chosen_graph.ndata['feat'][node_index]
-    print("feat: ",feat)
-    sybil_feat = feat * 2
-    print("sybil_feat: ",sybil_feat)
+def modify_g_edge_values(graph):
+    for edge_index in range(graph.num_edges()):
+        edge_id = graph.edata['_ID'][edge_index]
+        print("edge id: ", edge_id)
+        sybil_id = edge_id + 2
+        print("sybil edge id: ", sybil_id)
 
-    label = chosen_graph.ndata['label'][node_index]
-    print("label: ", label)
-    sybil_label = label * 2
-    print("sybil_label: ", sybil_label)
+sybil_graph = modify_g_node_values(chosen_graph)
+print("num of nodes: ",sybil_graph.num_nodes())
+print("num of edges: ",sybil_graph.num_edges())
+print("is homogenous: ",sybil_graph.is_homogeneous)
+print("num of source nodes: ",sybil_graph.num_src_nodes())
+print("num of destination nodes: ",sybil_graph.num_dst_nodes())
 
-    val_mask = chosen_graph.ndata['val_mask'][node_index]
-    print("val_mask: ", val_mask)
-    sybil_val_mask = torch.tensor(True)
-    print("sybil_val_mask: ", sybil_val_mask)
+# modify_g_edge_values(chosen_graph)
 
-    test_mask = chosen_graph.ndata['test_mask'][node_index]
-    print("test_mask: ", test_mask)
-    sybil_test_mask = torch.tensor(True)
-    print("sybil_test_mask: ", sybil_test_mask)
-
-    train_mask = chosen_graph.ndata['train_mask'][node_index]
-    print("train_mask: ",train_mask)
-    sybil_train_mask = torch.tensor(True)
-    print("sybil_train_mask: ",sybil_train_mask)
-
-    id = chosen_graph.ndata['_ID'][node_index]
-    print("_ID: ",id)
-    sybil_id = id + 2
-    print("sybil_id: ",sybil_id)
+# print(chosen_graph.ndata)
