@@ -12,6 +12,6 @@ split_method: random_choice
 # split_method: community_detection
 # split_method: b_min_cut
 # split_method: ub_min_cut
-num_clients: 10
-num_sybils: 3
-split: 11 # all_clients + 1 note: all_clients = num_clients + num_sybils
+num_clients: 100
+num_sybils: 20 # has to be lower than num_clients
+split: 101 # all_clients + 1 note: all_clients = num_clients + num_sybils
