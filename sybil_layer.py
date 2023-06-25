@@ -26,7 +26,7 @@ def data_split_2(g, args, split):
     return graphs
 
 split_method = "random_choice"
-split = 1
+split = 100
 graphs = data_split_2(g, split_method, split)
 
 chosen_graph = graphs[0]
@@ -94,19 +94,23 @@ def sybil_add_edges(graph, src_node_id, dest_node_id): # CPT-NOTE: Node is added
     return graph
 
 
-sybil_graph = modify_g_node_values(chosen_graph)
-print("num of sybil nodes: ",sybil_graph.num_nodes())
-print("num of sybil edges: ",sybil_graph.num_edges())
+# sybil_graph = modify_g_node_values(chosen_graph)
+# print("num of sybil nodes: ",sybil_graph.num_nodes())
+# print("num of sybil edges: ",sybil_graph.num_edges())
 
-sybil_graph = modify_g_edge_values(chosen_graph)
-print("num of sybil nodes: ",sybil_graph.num_nodes())
-print("num of sybil edges: ",sybil_graph.num_edges())
+# sybil_graph = modify_g_edge_values(chosen_graph)
+# print("num of sybil nodes: ",sybil_graph.num_nodes())
+# print("num of sybil edges: ",sybil_graph.num_edges())
 
-sybil_graph = sybil_add_nodes(sybil_graph, 10)
-print("new num of sybil nodes: ",sybil_graph.num_nodes())
-print("new num of sybil edges: ",sybil_graph.num_edges())
+# print(sybil_graph.edata)
 
-# TODO: Understand more
-# sybil_graph = sybil_add_edges(sybil_graph, sybil_graph[0], 1)
+# sybil_graph = sybil_add_nodes(sybil_graph, 10)
 # print("new num of sybil nodes: ",sybil_graph.num_nodes())
 # print("new num of sybil edges: ",sybil_graph.num_edges())
+
+# TODO: Understand more
+# sybil_graph = sybil_add_edges(sybil_graph, 0, 1)
+# print("new num of sybil nodes: ",sybil_graph.num_nodes())
+# print("new num of sybil edges: ",sybil_graph.num_edges())
+
+# print(sybil_graph.edata)
