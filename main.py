@@ -8,7 +8,7 @@ from plot import *
 import os
 import random
 
-from sybil_layer import *
+from sybil_layer_orchestrated import *
 
 # Initialize
 os.makedirs('saves', exist_ok=True)
