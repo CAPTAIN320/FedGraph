@@ -34,9 +34,9 @@ def sybil_add_nodes(graph, amount=0):
     graph.add_nodes(amount)
     return graph
 
-def sybil_add_edges(graph, src_node_id, dest_node_id, no_of_new_edges=0): # CPT-NOTE: Node is added if src & dest nodes do NOT exist
+def sybil_add_edges(graph, src_node_id, dest_node_id, no_of_new_edges=0, target_edge_feat='', new_edge_value=0): # CPT-NOTE: Node is added if src & dest nodes do NOT exist
     for i in range(no_of_new_edges):
-        graph.add_edges(src_node_id, dest_node_id)
+        graph.add_edges(src_node_id, dest_node_id, {target_edge_feat: torch.tensor([new_edge_value])})
     return graph
 
 # sybil_graph = add_g_edges(chosen_graph)
@@ -59,8 +59,11 @@ print('List of Edge Indexes: ', chosen_graph.edata['_ID'].tolist())
 no_of_new_edges = 5
 source_node = sybil_graph.num_nodes() - 1
 destination_node = sybil_graph.num_nodes() - 2
+target_edge_feature = '_ID'
+new_edge_value = 9
 
-sybil_graph = sybil_add_edges(sybil_graph, source_node, destination_node, no_of_new_edges)
+# sybil_graph = sybil_add_edges(sybil_graph, source_node, destination_node, no_of_new_edges)
+sybil_graph = sybil_add_edges(sybil_graph, torch.tensor(5), torch.tensor([5,1]), no_of_new_edges, target_edge_feature, new_edge_value)
 print("new num of sybil nodes: ",sybil_graph.num_nodes())
 print("new num of sybil edges: ",sybil_graph.num_edges())
 print('List of Sybil Edge Indexes: ', sybil_graph.edata['_ID'].tolist())
