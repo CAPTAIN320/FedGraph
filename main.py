@@ -56,7 +56,7 @@ for index, client in enumerate(clients):
 
             client.g = add_sybil_edges(
                                         client.g,
-                                        source_node, # ShouldLess than the amount of nodes in the graph
+                                        source_node, # Should be Less than the amount of nodes in the graph
                                         destination_node,
                                         target_edge_feature,
                                         new_edge_value,
