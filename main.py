@@ -8,7 +8,8 @@ from plot import *
 import os
 import random
 
-from sybil_layer import *
+from sybil_orchestrated import modify_g_node_values, modify_g_edge_values
+from sybil_non_orchestrated import add_sybil_edges
 
 # Initialize
 os.makedirs('saves', exist_ok=True)
@@ -36,17 +37,40 @@ num_sybil_clients = args.num_sybils
 sybil_clients = random.sample(range(total_clients), num_sybil_clients)
 # sybil_clients = [0, 2]
 
+attack_type = 'orchestratedff'
+
 for index, client in enumerate(clients):
     if index in sybil_clients:
         print("This is Sybil Client ", index+1)
         print("Modifying Graph")
-        client.g = modify_g_node_values(client.g) # modify node values
-        client.g = modify_g_edge_values(client.g) # modify edge values
+        if attack_type == 'orchestrated':
+            client.g = modify_g_node_values(client.g) # modify node values
+            client.g = modify_g_edge_values(client.g) # modify edge values
+        else:
+            no_of_new_edges = 1
+            source_node = client.g.num_nodes() - 1
+            destination_node = client.g.num_nodes() - 2
+            target_edge_feature = '_ID'
+            new_edge_value = random.randint(0,10000)
+            # new_edge_value = 1000
+
+            client.g = add_sybil_edges(
+                                        client.g,
+                                        source_node, # ShouldLess than the amount of nodes in the graph
+                                        destination_node,
+                                        target_edge_feature,
+                                        new_edge_value,
+                                        no_of_new_edges,
+                                    )
+            print("new num of sybil nodes: ",client.g.num_nodes())
+            print("new num of sybil edges: ",client.g.num_edges())
+            print('List of Sybil Edge Indexes: ', client.g.edata['_ID'].tolist())
     else:
         print("Honest Client ", index+1)
     client.g.remove_edges(client.g.edges(form='eid'))
-    # i.g = add_self_loop(i.g)
+    # client.g = add_self_loop(client.g)
     add_edges(client.g)
+    print(client.g.num_edges())
 
 # This client is used to evaluate the model on unseen data
 test_client = Client(-1, graphs[-1], args)
