@@ -1,33 +1,17 @@
 from dgl.data import CoraGraphDataset, CiteseerGraphDataset, PubmedGraphDataset, BitcoinOTCDataset, RedditDataset
 from data import *
 
+from sybil_utils import data_split
+
 import torch
 
 data = CoraGraphDataset()
 g = data[0]
 # print(g)
 
-# Split the graph
-def data_split_2(g, args, split):
-    if args == 'random_choice':
-        # random_choice
-        assign = random_choice(split, g.number_of_nodes()).tolist()
-        index = [[] for i in range(split)]
-        [index[ind].append(i) for i, ind in enumerate(assign)]
-
-    graphs = [node_subgraph(g, index[i]) for i in range(split)]
-
-    for i in range(len(graphs)):
-        # graphs[i].int().to(args.device)
-        # add self loop
-        graphs[i] = remove_self_loop(graphs[i])
-        graphs[i] = add_self_loop(graphs[i])
-
-    return graphs
-
 split_method = "random_choice"
 split = 100
-graphs = data_split_2(g, split_method, split)
+graphs = data_split(g, split_method, split)
 
 chosen_graph = graphs[0]
 
@@ -85,15 +69,6 @@ def modify_g_edge_values(graph):
 
     return sybil_graph
 
-def sybil_add_nodes(graph, amount=0):
-    graph.add_nodes(amount)
-    return graph
-
-def sybil_add_edges(graph, src_node_id, dest_node_id): # CPT-NOTE: Node is added if src & dest nodes do NOT exist
-    graph.add_edges(src_node_id, dest_node_id)
-    return graph
-
-
 # sybil_graph = modify_g_node_values(chosen_graph)
 # print("num of sybil nodes: ",sybil_graph.num_nodes())
 # print("num of sybil edges: ",sybil_graph.num_edges())
@@ -101,16 +76,5 @@ def sybil_add_edges(graph, src_node_id, dest_node_id): # CPT-NOTE: Node is added
 # sybil_graph = modify_g_edge_values(chosen_graph)
 # print("num of sybil nodes: ",sybil_graph.num_nodes())
 # print("num of sybil edges: ",sybil_graph.num_edges())
-
-# print(sybil_graph.edata)
-
-# sybil_graph = sybil_add_nodes(sybil_graph, 10)
-# print("new num of sybil nodes: ",sybil_graph.num_nodes())
-# print("new num of sybil edges: ",sybil_graph.num_edges())
-
-# TODO: Understand more
-# sybil_graph = sybil_add_edges(sybil_graph, 0, 1)
-# print("new num of sybil nodes: ",sybil_graph.num_nodes())
-# print("new num of sybil edges: ",sybil_graph.num_edges())
 
 # print(sybil_graph.edata)
