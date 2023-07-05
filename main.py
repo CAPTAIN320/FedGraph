@@ -51,8 +51,8 @@ for index, client in enumerate(clients):
             source_node = client.g.num_nodes() - 1
             destination_node = client.g.num_nodes() - 2
             target_edge_feature = '_ID'
-            new_edge_value = random.randint(0,10000)
-            # new_edge_value = 1000
+            new_edge_value = random.randint(0,100)
+            # new_edge_value = 0
 
             client.g = add_sybil_edges(
                                         client.g,
