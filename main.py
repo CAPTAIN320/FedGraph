@@ -37,11 +37,11 @@ num_sybil_clients = args.num_sybils
 sybil_clients = random.sample(range(total_clients), num_sybil_clients)
 # sybil_clients = [0, 2]
 
-attack_type = 'orchestratedff'
+attack_type = 'orchestratedgh'
 
 for index, client in enumerate(clients):
     if index in sybil_clients:
-        print("This is Sybil Client ", index+1)
+        print("Sybil Client ", index+1)
         print("Modifying Graph")
         if attack_type == 'orchestrated':
             client.g = modify_g_node_values(client.g) # modify node values
@@ -51,8 +51,8 @@ for index, client in enumerate(clients):
             source_node = client.g.num_nodes() - 1
             destination_node = client.g.num_nodes() - 2
             target_edge_feature = '_ID'
-            new_edge_value = random.randint(0,100)
-            # new_edge_value = 0
+            # new_edge_value = random.randint(0,100)
+            new_edge_value = 100
 
             client.g = add_sybil_edges(
                                         client.g,
@@ -62,15 +62,15 @@ for index, client in enumerate(clients):
                                         new_edge_value,
                                         no_of_new_edges,
                                     )
-            print("new num of sybil nodes: ",client.g.num_nodes())
-            print("new num of sybil edges: ",client.g.num_edges())
-            print('List of Sybil Edge Indexes: ', client.g.edata['_ID'].tolist())
+            # print("new num of sybil nodes: ",client.g.num_nodes())
+            # print("new num of sybil edges: ",client.g.num_edges())
+            # print('List of Sybil Edge Indexes: ', client.g.edata['_ID'].tolist())
     else:
         print("Honest Client ", index+1)
     client.g.remove_edges(client.g.edges(form='eid'))
     # client.g = add_self_loop(client.g)
     add_edges(client.g)
-    print(client.g.num_edges())
+    # print(client.g.num_edges())
 
 # This client is used to evaluate the model on unseen data
 test_client = Client(-1, graphs[-1], args)
@@ -92,21 +92,32 @@ for _ in range(int(args.n_epochs)):
     acc = evaluate(server.model, test_client)
     recorder['test_acc']['clients'][0].append(acc)
 
-# Evaluate
+# Evaluate Clients
 for k in range(len(clients)):
     acc = evaluate(clients[k].model, clients[k], mask='test')
-    print("Client{}: {:.2%}".format(clients[k].id, acc))
+    if index in sybil_clients:
+        print("Sybil Client{}: {:.2%}".format(clients[k].id, acc))
+    else:
+        print("Client{}: {:.2%}".format(clients[k].id, acc))
+
+# Evaluate Server
 acc = evaluate(server.model, server)
 print("Server: {:.2%}".format(acc))
 server.g.remove_edges(server.g.edges(form='eid'))
 server.g = add_self_loop(server.g)
 acc = evaluate(server.model, server)
 print("Server: {:.2%}".format(acc))
+
+# Evaluate Test Client
 acc = evaluate(server.model, test_client)
 print("Test Client{}: {:.2%}".format(test_client.id, acc))
 test_client.g.remove_edges(test_client.g.edges(form='eid'))
 test_client.g = add_self_loop(test_client.g)
 acc = evaluate(server.model, test_client)
 print("Test Client{}: {:.2%}".format(test_client.id, acc))
+
+# Save result
 torch.save(recorder, './saves/recorder.pt')
+
+# Plot Graph
 plotfig(recorder, args)
