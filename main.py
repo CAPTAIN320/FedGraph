@@ -51,7 +51,8 @@ total_clients = len(clients)
 num_sybil_clients = args.num_sybils
 sybil_clients = random.sample(range(total_clients), num_sybil_clients)
 
-attack_type = 'orchestratedgh'
+attack_type = 'orchestratedfdf'
+num_fake_edges = 10
 
 for index, client in enumerate(clients):
     if index in sybil_clients:
@@ -61,7 +62,7 @@ for index, client in enumerate(clients):
             client.g = modify_g_node_values(client.g) # modify node values
             client.g = modify_g_edge_values(client.g) # modify edge values
         else:
-            no_of_new_edges = 1
+            no_of_new_edges = num_fake_edges
             source_node = client.g.num_nodes() - 1
             destination_node = client.g.num_nodes() - 2
             target_edge_feature = '_ID'
@@ -110,7 +111,12 @@ for _ in range(int(args.n_epochs)):
     recorder['test_acc']['clients'][0].append(acc)
 
 recorder['test_acc']['test_client'] = test_client_acc
+# Attack 1
 save_accuracy_csv(recorder, f'./results/A1_{args.dataset}_{args.num_sybils}_sybils.csv', args)
+
+# Attack 2
+save_accuracy_csv(recorder, f'./results/A2_{args.dataset}_{args.num_sybils}_sybils_{num_fake_edges}_same-values.csv', args)
+# CPT-NOTE: Add to the file name of Attack 2 file depending on what you are doing e.g. random-values, same-values,
 
 # Evaluate Clients
 for k in range(len(clients)):
