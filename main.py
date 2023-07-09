@@ -11,9 +11,24 @@ import random
 from sybil_orchestrated import modify_g_node_values, modify_g_edge_values
 from sybil_non_orchestrated import add_sybil_edges
 
+import csv
+import numpy as np
+
+args = args()
+
+def save_accuracy_csv(recorder, filename, args):
+    test_acc = recorder['test_acc']['clients'][0]
+    headers = ['Epoch', 'Accuracy', 'Sybil %']
+    data = [(epoch+1, acc, args.num_sybils) for epoch, acc in enumerate(test_acc)]
+    with open(filename, 'w', newline='') as file:
+        writer = csv.writer(file)
+        writer.writerow(headers)
+        writer.writerows(data)
+
 # Initialize
 os.makedirs('saves', exist_ok=True)
-args = args()
+os.makedirs('results', exist_ok=True)
+
 setup_seed(args.seed)
 recorder = {'train_loss': {'clients': [[] for k in range(args.split)], 'server': []},
             'val_loss': {'clients': [[] for k in range(args.split)], 'server': []},
@@ -35,7 +50,6 @@ clients = [Client(k, graphs[k], args) for k in range(args.num_clients)]
 total_clients = len(clients)
 num_sybil_clients = args.num_sybils
 sybil_clients = random.sample(range(total_clients), num_sybil_clients)
-# sybil_clients = [0, 2]
 
 attack_type = 'orchestratedgh'
 
@@ -52,7 +66,7 @@ for index, client in enumerate(clients):
             destination_node = client.g.num_nodes() - 2
             target_edge_feature = '_ID'
             # new_edge_value = random.randint(0,100)
-            new_edge_value = 100
+            new_edge_value = 10
 
             client.g = add_sybil_edges(
                                         client.g,
@@ -74,8 +88,9 @@ for index, client in enumerate(clients):
 
 # This client is used to evaluate the model on unseen data
 test_client = Client(-1, graphs[-1], args)
+test_client_acc = []
 
-# FLearning
+# Federated Learning
 for _ in range(int(args.n_epochs)):
     for k in range(len(clients)):
         # Fork
@@ -89,8 +104,13 @@ for _ in range(int(args.n_epochs)):
     server.merge(clients)
     acc = evaluate(server.model, server)
     recorder['test_acc']['server'].append(acc)
+    # Evaluate Test Client
+    test_client_acc.append(evaluate(server.model, test_client))
     acc = evaluate(server.model, test_client)
     recorder['test_acc']['clients'][0].append(acc)
+
+recorder['test_acc']['test_client'] = test_client_acc
+save_accuracy_csv(recorder, f'./results/A1_{args.dataset}_{args.num_sybils}_sybils.csv', args)
 
 # Evaluate Clients
 for k in range(len(clients)):

@@ -1,12 +1,12 @@
 device: cpu
 seed: 2020
-# dataset: cora
-dataset: citeseer
+dataset: cora
+# dataset: citeseer
 # dataset: pubmed
 # dataset: reddit
 E: 3 # dropout probability
 # n_epochs: 2000 # Original number of epoch
-n_epochs: 20
+n_epochs: 100
 model_type: GCN
 # model_type: MLP
 split_method: random_choice
