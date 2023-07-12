@@ -2,7 +2,6 @@ __pycache__/
 .vscode/
 saves/
 wandb/
-test.py
 *.ipynb
 useless.py
 *.png

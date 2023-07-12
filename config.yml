@@ -5,12 +5,14 @@ dataset: citeseer
 # dataset: pubmed
 # dataset: reddit
 E: 3 # dropout probability
-n_epochs: 2000
+# n_epochs: 2000 # Original number of epoch
+n_epochs: 20
 model_type: GCN
 # model_type: MLP
 split_method: random_choice
 # split_method: community_detection
 # split_method: b_min_cut
 # split_method: ub_min_cut
-num_clients: 10
-split: 11 # num_clients + 1
+num_clients: 100
+num_sybils: 50 # has to be lower than num_clients
+split: 101 # all_clients + 1 note: all_clients = num_clients + num_sybils
