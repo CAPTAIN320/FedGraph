@@ -6,34 +6,37 @@ import numpy as np
 num_sybils_array = [0, 10, 20, 30, 40, 50]
 
 num_fake_edges = 10
+datasets = ['citeseer', 'cora', 'pubmed']
 
 ### ATTACK 1
 #1 plot_accuracy_over_epoch for varying percentage of sybils
-for num_sybils in num_sybils_array:
-    name = f'A1_citeseer_{num_sybils}_sybils'
-    data = pd.read_csv(f'results/{name}.csv')
-    epochs = data['Epoch']
-    accuracy = data['Accuracy']
-    plt.plot(epochs, accuracy)
-    plt.xlabel('Epoch')
-    plt.ylabel('Accuracy')
-    plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
-    plt.savefig(f'./graphs/{name}.png')
-    plt.close()
+for index, dataset in enumerate(datasets):
+    for num_sybils in num_sybils_array:
+        name = f'A1_{dataset}_{num_sybils}_sybils'
+        data = pd.read_csv(f'results/{name}.csv')
+        epochs = data['Epoch']
+        accuracy = data['Accuracy']
+        plt.plot(epochs, accuracy)
+        plt.xlabel('Epoch')
+        plt.ylabel('Accuracy')
+        plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
+        plt.savefig(f'./graphs/{name}.png')
+        plt.close()
 
 
 #2 plot_accuracy_per_sybil_percentage at 10 epochs
-for num_sybils in num_sybils_array:
-    name = f'A2_citeseer_{num_sybils}_sybils_{num_fake_edges}_same-values'
-    data = pd.read_csv(f'results/{name}.csv')
-    epochs = data['Sybil %']
-    accuracy = data['Accuracy']
-    plt.plot(epochs, accuracy)
-    plt.xlabel('Sybil %')
-    plt.ylabel('Accuracy')
-plt.title(f'Accuracy over Sybil % {num_sybils}% Sybils')
-plt.savefig(f'./graphs/{name}.png')
-plt.close()
+for index, dataset in enumerate(datasets):
+    for num_sybils in num_sybils_array:
+        name = f'A2_{dataset}_{num_sybils}_sybils_{num_fake_edges}_same-values'
+        data = pd.read_csv(f'results/{name}.csv')
+        epochs = data['Sybil %']
+        accuracy = data['Accuracy']
+        plt.plot(epochs, accuracy)
+        plt.xlabel('Sybil %')
+        plt.ylabel('Accuracy')
+    plt.title(f'Accuracy over Sybil % {num_sybils}% Sybils')
+    plt.savefig(f'./graphs/{name}.png')
+    plt.close()
 
 # plt.plot(epochs, accuracy)
 # model_accuracy = [0, 10, 25, 47, 76]

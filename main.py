@@ -51,8 +51,9 @@ total_clients = len(clients)
 num_sybil_clients = args.num_sybils
 sybil_clients = random.sample(range(total_clients), num_sybil_clients)
 
-attack_type = 'orchestratedghj'
+attack_type = 'orchestrated'
 num_fake_edges = 10
+edge_value_type = 'random'
 
 for index, client in enumerate(clients):
     if index in sybil_clients:
@@ -66,8 +67,10 @@ for index, client in enumerate(clients):
             source_node = client.g.num_nodes() - 1
             destination_node = client.g.num_nodes() - 2
             target_edge_feature = '_ID'
-            # new_edge_value = random.randint(0,100)
-            new_edge_value = 10
+            if edge_value_type == 'same':
+                new_edge_value = 10
+            if edge_value_type == 'random':
+                new_edge_value = random.randint(0,100)
 
             client.g = add_sybil_edges(
                                         client.g,
@@ -117,7 +120,7 @@ if attack_type == 'orchestrated':
     save_accuracy_csv(recorder, f"./results/A1_{args.dataset}_{args.num_sybils}_sybils.csv", args)
 else:
     # Attack 2
-    save_accuracy_csv(recorder, f'./results/A2_{args.dataset}_{args.num_sybils}_sybils_{num_fake_edges}_same-values.csv', args)
+    save_accuracy_csv(recorder, f'./results/A2_{args.dataset}_{args.num_sybils}_sybils_{num_fake_edges}_{edge_value_type}-values.csv', args)
     # CPT-NOTE: Add to the file name of Attack 2 file depending on what you are doing e.g. random-values, same-values,
 
 # Evaluate Clients
