@@ -19,9 +19,9 @@ for index, dataset in enumerate(datasets):
         plt.plot(epochs, accuracy)
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
-        plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
-        plt.savefig(f'./graphs/{name}.png')
-        plt.close()
+    plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
+    plt.savefig(f'./graphs/{name}.png')
+    plt.close()
 
 
 #2 plot_accuracy_per_sybil_percentage at 10 epochs
