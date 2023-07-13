@@ -22,26 +22,26 @@ for num_sybils in num_sybils_array:
     plt.close()
 
 
-#2 plot_accuracy_per_sybil_percentage at 1000 epochs
+#2 plot_accuracy_per_sybil_percentage at 10 epochs
 for num_sybils in num_sybils_array:
     name = f'A2_citeseer_{num_sybils}_sybils_{num_fake_edges}_same-values'
     data = pd.read_csv(f'results/{name}.csv')
-    epochs = data['Epoch']
+    epochs = data['Sybil %']
     accuracy = data['Accuracy']
     plt.plot(epochs, accuracy)
-    plt.xlabel('Epoch')
+    plt.xlabel('Sybil %')
     plt.ylabel('Accuracy')
-    plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
-    plt.savefig(f'./graphs/{name}.png')
-    plt.close()
+plt.title(f'Accuracy over Sybil % {num_sybils}% Sybils')
+plt.savefig(f'./graphs/{name}.png')
+plt.close()
 
-plt.plot(epochs, accuracy)
-model_accuracy = [0, 10, 25, 47, 76]
-percentage_of_sybils = [0, 10, 20, 30, 40, 50]
-num_of_epoch = [1, 5, 100, 500, 1000]
-num_of_fake_edges = [0, 1, 10, 100, 1000, 10000]
+# plt.plot(epochs, accuracy)
+# model_accuracy = [0, 10, 25, 47, 76]
+# percentage_of_sybils = [0, 10, 20, 30, 40, 50]
+# num_of_epoch = [1, 5, 100, 500, 1000]
+# num_of_fake_edges = [0, 1, 10, 100, 1000, 10000]
 
-os.makedirs('graphs', exist_ok=True)
+# os.makedirs('graphs', exist_ok=True)
 
 ### ATTACK 1
 #1 plot_accuracy_per_epoch for varying percentage of sybils
