@@ -9,19 +9,20 @@ datasets = ['citeseer']
 plt.figure()  # Create a new figure
 
 ##### ATTACK 1 ###########
-num_sybils_array = [0]
+num_sybils_array = [0, 10, 20, 30, 40, 50]
 for num_sybils in num_sybils_array:
     data = pd.read_csv(f'results_2/A1_citeseer_{num_sybils}_sybils.csv')
     epoch = data['Epoch']
     accuracy = data['Accuracy']
     label = f'{num_sybils}% sybils'
-    plt.plot(epoch, accuracy, marker='x', linestyle='-', label=label)
-plt.xlabel('Number of Fake Edges')
+    plt.plot(epoch, accuracy, linestyle='-', label=label)
+plt.xlabel('Epoch')
 plt.ylabel('Accuracy')
-plt.title('Accuracy vs Number of Fake Edges')
+plt.title(f'Accuracy over Epochs - citeseer')
 plt.grid(True)
-plt.legend()  # Add legend based on the labels in the plot
-plt.savefig('./graphs_2/A1_citeseer_sybils.png')
+plt.legend()
+plt.xlim(0)
+plt.savefig('./graphs_2/A1_citeseer_accuracy.png')
 plt.close()
 
 ##### ATTACK 2 ###########
