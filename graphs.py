@@ -7,6 +7,8 @@ num_sybils_array = [0, 10, 20, 30, 40, 50]
 num_fake_edges = 10
 datasets = ['citeseer', 'cora', 'pubmed']
 
+os.makedirs('graphs', exist_ok=True)
+
 ### ATTACK 1
 #1 plot_accuracy_over_epoch for varying percentage of sybils
 for index, dataset in enumerate(datasets):
@@ -29,11 +31,11 @@ for index, dataset in enumerate(datasets):
     plt.legend(lines, labels)
 
     plt.title(f'Accuracy over Epochs - {dataset}')
-    plt.savefig(f'./graphs/{dataset}_accuracy.png')
+    plt.savefig(f'./graphs/A1_{dataset}_accuracy.png')
     plt.close()
 
 
-#2 plot_accuracy_per_sybil_percentage at 10 epochs
+#2 plot_accuracy_per_sybil_percentage same edge values
 for index, dataset in enumerate(datasets):
     plt.figure()  # Create a new figure for each dataset
     lines = []  # Store the lines for creating the legend
@@ -53,13 +55,38 @@ for index, dataset in enumerate(datasets):
     labels = [f'{num_sybils}% Sybils' for num_sybils in num_sybils_array]
     plt.legend(lines, labels)
 
-    plt.title(f'Accuracy over Sybil % - {dataset}')
-    plt.savefig(f'./graphs/{dataset}_sybil_accuracy.png')
+    plt.title(f'Accuracy over Sybil % - {dataset} same edge values')
+    plt.savefig(f'./graphs/A2_{dataset}_sybil_accuracy.png')
     plt.close()
 
+# #3 plot_accuracy_per_sybil_percentage random edge values
+# for index, dataset in enumerate(datasets):
+#     plt.figure()  # Create a new figure for each dataset
+#     lines = []  # Store the lines for creating the legend
+
+#     for num_sybils in num_sybils_array:
+#         name = f'A2_{dataset}_{num_sybils}_sybils_{num_fake_edges}_random-values'
+#         data = pd.read_csv(f'results/{name}.csv')
+#         sybils = data['Sybil %']
+#         accuracy = data['Accuracy']
+#         line, = plt.plot(sybils, accuracy)
+#         lines.append(line)  # Add the line to the legend
+
+#         plt.xlabel('Sybil %')
+#         plt.ylabel('Accuracy')
+
+#     # Create the legend with labels
+#     labels = [f'{num_sybils}% Sybils' for num_sybils in num_sybils_array]
+#     plt.legend(lines, labels)
+
+#     plt.title(f'Accuracy over Sybil % - {dataset} random edge values')
+#     plt.savefig(f'./graphs/A2_{dataset}_sybil_accuracy.png')
+#     plt.close()
 
 
 
+
+############## OLD ###################
 # ### ATTACK 1
 # #1 plot_accuracy_over_epoch for varying percentage of sybils
 # for index, dataset in enumerate(datasets):
