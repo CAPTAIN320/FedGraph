@@ -32,7 +32,7 @@ def visualize(g):
     # plt.savefig('./graph.pdf')
 
 
-def plotg(g, name=''):
+def plotg(g):
     nx_G = g.to_networkx()
     # labels = g.ndata['label']
     # pos = nx.spring_layout(nx_G)
@@ -42,7 +42,7 @@ def plotg(g, name=''):
         nx_G, node_size=5, cmap=plt.get_cmap('coolwarm'),
         edge_color='k',
         arrows=False, width=0.5, style='dotted', with_labels=False)
-    plt.savefig(f'./saves/{name}.pdf')
+    plt.savefig('./graph.pdf')
 
 def subfigs(graphs, args):
     plt.subplot(221)

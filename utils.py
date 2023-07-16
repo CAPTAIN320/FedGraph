@@ -105,7 +105,4 @@ def evaluate(model, target, mask='test'):
         labels = target.labels[mask]
         pred = logits.argmax(dim=1)
         correct = torch.sum(pred == labels)
-        if len(labels) == 0:
-            return correct.item() * 1.0
-        else:
-            return correct.item() * 1.0 / len(labels)
+        return correct.item() * 1.0 / len(labels)
