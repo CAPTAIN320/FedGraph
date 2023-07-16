@@ -4,60 +4,115 @@ import pandas as pd
 import numpy as np
 
 num_sybils_array = [0, 10, 20, 30, 40, 50]
-
 num_fake_edges = 10
 datasets = ['citeseer', 'cora', 'pubmed']
+
+os.makedirs('graphs', exist_ok=True)
 
 ### ATTACK 1
 #1 plot_accuracy_over_epoch for varying percentage of sybils
 for index, dataset in enumerate(datasets):
+    plt.figure()  # Create a new figure for each dataset
+    lines = []  # Store the lines for creating the legend
+
     for num_sybils in num_sybils_array:
         name = f'A1_{dataset}_{num_sybils}_sybils'
         data = pd.read_csv(f'results/{name}.csv')
         epochs = data['Epoch']
         accuracy = data['Accuracy']
-        plt.plot(epochs, accuracy)
+        line, = plt.plot(epochs, accuracy)
+        lines.append(line)  # Add the line to the legend
+
         plt.xlabel('Epoch')
         plt.ylabel('Accuracy')
-    plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
-    plt.savefig(f'./graphs/{name}.png')
+
+    # Create the legend with labels
+    labels = [f'{num_sybils}% Sybils' for num_sybils in num_sybils_array]
+    plt.legend(lines, labels)
+
+    plt.title(f'Accuracy over Epochs - {dataset}')
+    plt.savefig(f'./graphs/A1_{dataset}_accuracy.png')
     plt.close()
 
-
-#2 plot_accuracy_per_sybil_percentage at 10 epochs
+### ATTACK 2
+#2 plot_accuracy_per_sybil_percentage same edge values
 for index, dataset in enumerate(datasets):
+    plt.figure()  # Create a new figure for each dataset
+    lines = []  # Store the lines for creating the legend
+
     for num_sybils in num_sybils_array:
         name = f'A2_{dataset}_{num_sybils}_sybils_{num_fake_edges}_same-values'
         data = pd.read_csv(f'results/{name}.csv')
-        sybils = data['Sybil %']
-        accuracy = data['Accuracy']
-        plt.plot(sybils, accuracy)
+        sybils = data['Sybil %'][:-1]
+        accuracy = data['Accuracy'][:-1]
+        line, = plt.plot(sybils, accuracy)
+        lines.append(line)  # Add the line to the legend
+
         plt.xlabel('Sybil %')
         plt.ylabel('Accuracy')
-    plt.title(f'Accuracy over Sybil % {num_sybils}% Sybils')
-    plt.savefig(f'./graphs/{name}.png')
+
+    # Create the legend with labels
+    labels = [f'{num_sybils}% Sybils' for num_sybils in num_sybils_array]
+    plt.legend(lines, labels)
+
+    plt.title(f'Accuracy over Sybil % - {dataset} same edge values')
+    plt.savefig(f'./graphs/A2_{dataset}_sybil_accuracy.png')
     plt.close()
 
-# plt.plot(epochs, accuracy)
-# model_accuracy = [0, 10, 25, 47, 76]
-# percentage_of_sybils = [0, 10, 20, 30, 40, 50]
-# num_of_epoch = [1, 5, 100, 500, 1000]
-# num_of_fake_edges = [0, 1, 10, 100, 1000, 10000]
+# #3 plot_accuracy_per_sybil_percentage random edge values
+# for index, dataset in enumerate(datasets):
+#     plt.figure()  # Create a new figure for each dataset
+#     lines = []  # Store the lines for creating the legend
 
-# os.makedirs('graphs', exist_ok=True)
+#     for num_sybils in num_sybils_array:
+#         name = f'A2_{dataset}_{num_sybils}_sybils_{num_fake_edges}_random-values'
+#         data = pd.read_csv(f'results/{name}.csv')
+#         sybils = data['Sybil %']
+#         accuracy = data['Accuracy']
+#         line, = plt.plot(sybils, accuracy)
+#         lines.append(line)  # Add the line to the legend
 
-### ATTACK 1
-#1 plot_accuracy_per_epoch for varying percentage of sybils
+#         plt.xlabel('Sybil %')
+#         plt.ylabel('Accuracy')
 
-#2 plot_accuracy_per_sybil_percentage at 1000 epochs
+#     # Create the legend with labels
+#     labels = [f'{num_sybils}% Sybils' for num_sybils in num_sybils_array]
+#     plt.legend(lines, labels)
 
-
-
-### ATTACK 2
-#1a plot_accuracy_per_sybil_percentage if Random edge values
-
-#1b plot_accuracy_per_sybil_percentage if Same edge values
-
-#2 plot accuracy_per_number_of_fake_edges for varying percentage of sybils
+#     plt.title(f'Accuracy over Sybil % - {dataset} random edge values')
+#     plt.savefig(f'./graphs/A2_{dataset}_sybil_accuracy.png')
+#     plt.close()
 
 
+
+
+############## OLD ###################
+# ### ATTACK 1
+# #1 plot_accuracy_over_epoch for varying percentage of sybils
+# for index, dataset in enumerate(datasets):
+#     for num_sybils in num_sybils_array:
+#         name = f'A1_{dataset}_{num_sybils}_sybils'
+#         data = pd.read_csv(f'results/{name}.csv')
+#         epochs = data['Epoch']
+#         accuracy = data['Accuracy']
+#         plt.plot(epochs, accuracy)
+#         plt.xlabel('Epoch')
+#         plt.ylabel('Accuracy')
+#     plt.title(f'Accuracy over Epochs {num_sybils}% Sybils')
+#     plt.savefig(f'./graphs/{name}.png')
+#     plt.close()
+
+
+# #2 plot_accuracy_per_sybil_percentage at 10 epochs
+# for index, dataset in enumerate(datasets):
+#     for num_sybils in num_sybils_array:
+#         name = f'A2_{dataset}_{num_sybils}_sybils_{num_fake_edges}_same-values'
+#         data = pd.read_csv(f'results/{name}.csv')
+#         sybils = data['Sybil %']
+#         accuracy = data['Accuracy']
+#         plt.plot(sybils, accuracy)
+#         plt.xlabel('Sybil %')
+#         plt.ylabel('Accuracy')
+#     plt.title(f'Accuracy over Sybil % {num_sybils}% Sybils')
+#     plt.savefig(f'./graphs/{name}.png')
+#     plt.close()
