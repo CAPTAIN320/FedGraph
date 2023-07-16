@@ -17,7 +17,7 @@ for index, dataset in enumerate(datasets):
 
     for num_sybils in num_sybils_array:
         name = f'A1_{dataset}_{num_sybils}_sybils'
-        data = pd.read_csv(f'results/{name}.csv')
+        data = pd.read_csv(f'results_2/{name}.csv')
         epochs = data['Epoch']
         accuracy = data['Accuracy']
         line, = plt.plot(epochs, accuracy)
@@ -42,7 +42,7 @@ for index, dataset in enumerate(datasets):
 
     for num_sybils in num_sybils_array:
         name = f'A2_{dataset}_{num_sybils}_sybils_{num_fake_edges}_same-values'
-        data = pd.read_csv(f'results/{name}.csv')
+        data = pd.read_csv(f'results_2/{name}.csv')
         sybils = data['Sybil %'][:-1]
         accuracy = data['Accuracy'][:-1]
         line, = plt.plot(sybils, accuracy)
