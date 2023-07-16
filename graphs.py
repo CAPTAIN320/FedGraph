@@ -34,7 +34,7 @@ for index, dataset in enumerate(datasets):
     plt.savefig(f'./graphs/A1_{dataset}_accuracy.png')
     plt.close()
 
-
+### ATTACK 2
 #2 plot_accuracy_per_sybil_percentage same edge values
 for index, dataset in enumerate(datasets):
     plt.figure()  # Create a new figure for each dataset
