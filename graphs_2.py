@@ -26,16 +26,28 @@ plt.legend()  # Add legend based on the labels in the plot
 plt.savefig('./graphs/A2_citeseer_accuracy_num-of-fake-edges.png')
 plt.close()
 
-
-
-
+# A2_citeseer_random-values
 data = pd.read_csv(f'results_2/A2_citeseer_random-values.csv')
 num_sybils = data['Sybil %']
 accuracy = data['Accuracy']
 plt.plot(num_sybils, accuracy, marker='o', linestyle='-', color='b')
 plt.xlabel('Sybil %')
 plt.ylabel('Accuracy')
-plt.title('Accuracy vs Sybil %')
+plt.title('Accuracy vs Sybil % random values')
 plt.grid(True)
+plt.ylim(0)
 plt.savefig('./graphs/A2_citeseer_random-values.png')
+plt.close()
+
+# A2_citeseer_same-values
+data = pd.read_csv(f'results_2/A2_citeseer_same-values.csv')
+num_sybils = data['Sybil %']
+accuracy = data['Accuracy']
+plt.plot(num_sybils, accuracy, marker='o', linestyle='-', color='b')
+plt.xlabel('Sybil %')
+plt.ylabel('Accuracy')
+plt.title('Accuracy vs Sybil % same values')
+plt.grid(True)
+plt.ylim(0)
+plt.savefig('./graphs/A2_citeseer_same-values.png')
 plt.close()
